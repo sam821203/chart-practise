@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chart.js, the Missing Manual</title>
     <style>
       * {
@@ -13,7 +13,7 @@
       .chartMenu {
         width: 100vw;
         height: 40px;
-        background: #1a1a1a;
+        background: #1A1A1A;
         color: rgba(75, 192, 192, 1);
       }
       .chartMenu p {
@@ -39,7 +39,7 @@
   </head>
   <body>
     <div class="chartMenu">
-      <p>Chart JS 3.7.0</p>
+      <p>Chart JS 3.6.0</p>
     </div>
     <div class="chartCard">
       <div class="chartBox">
@@ -50,40 +50,45 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-      const labels = ["red", "blue", "yellow", "green", "purple", "orange"]
-      // labels.pop()
-      labels.shift()
-      labels.unshift('pink')
+    // data block
+    const data = {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: 'rgba(255, 99, 132, 1)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        borderWidth: 1
+      }]
+    };
 
-      // data block
-      const data = {
-        labels,
-        datasets: [
-          {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: labels,
-            borderColor: labels,
-            borderWidth: 1,
-          },
-        ],
-      };
+    // config block
+    const config = {
+      type: 'line',
+      data: data,
+      options: {
+        tension: 0.4,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
 
-      // config block
-      const config = {
-        type: "bar",
-        data,
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
-      };
-
-      // init render block
-      const myChart = new Chart(document.getElementById("myChart"), config);
+    // init render block
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
     </script>
+
+
   </body>
 </html>
+
+
+
+
