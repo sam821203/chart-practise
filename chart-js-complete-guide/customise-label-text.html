@@ -83,6 +83,16 @@
         type: "bar",
         data: data,
         options: {
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  console.log(context.dataset.label);
+                  return `$${context.raw} ${context.dataset.label}`;
+                },
+              },
+            },
+          },
           scales: {
             y: {
               beginAtZero: true,

@@ -44,19 +44,25 @@
     <div class="chartCard">
       <div class="chartBox">
         <canvas id="myChart"></canvas>
+        <input id="myID" type="number" value="3" />
+        <input id="myLabel" type="text" value="" />
+        <button id="addBtn">Add</button>
       </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
+      const labels = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"];
+      const dataPoints = [12, 19, 3, 5, 2, 3];
+
       // data block
       const data = {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: labels,
         datasets: [
           {
             label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
+            data: dataPoints,
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
               "rgba(54, 162, 235, 0.2)",
@@ -93,6 +99,23 @@
 
       // init render block
       const myChart = new Chart(document.getElementById("myChart"), config);
+
+      const addBtn = document.getElementById("addBtn");
+      const addValue = () => {
+        const myID = document.getElementById("myID");
+        const myLabel = document.getElementById("myLabel");
+
+        // update
+        dataPoints.push(Number(myID.value));
+        labels.push(myLabel.value);
+
+        myChart.config.data.labels = labels;
+        myChart.config.data.datasets[0].data = dataPoints;
+
+        myChart.update();
+      };
+
+      addBtn.addEventListener("click", addValue);
     </script>
   </body>
 </html>
