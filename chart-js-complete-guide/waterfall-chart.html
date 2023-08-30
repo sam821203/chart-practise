@@ -54,6 +54,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script> -->
 
     <script>
       const barBackgroundColor = () => {
@@ -102,7 +103,7 @@
 
       // data block
       const data = {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange", "Next"],
         datasets: [
           {
             label: "# of Votes",
@@ -113,8 +114,9 @@
               [19, 3],
               [3, 5],
               [5, 2],
-              [2, 3],
-              [3, 9],
+              [2, 4],
+              [4, 15],
+              [15, 11],
             ],
             backgroundColor: barBackgroundColor(),
             borderColor: barBorderColor(),
@@ -124,17 +126,64 @@
         ],
       };
 
+      // waterfallLines plugin
+      const waterfallLines = {
+        id: "waterfallLines",
+        beforeDraw(chart, args, options) {
+          const {
+            ctx,
+            config,
+            scales: { x, y },
+          } = chart;
+
+          ctx.save();
+          ctx.strokeStyle = options.lineColor;
+          ctx.setLineDash([options.lineStyle1, options.lineStyle2]);
+
+          for (
+            let i = 0;
+            i < config._config.data.datasets[0].data.length - 1;
+            i++
+          ) {
+            ctx.strokeRect(
+              x.getPixelForValue(i),
+              y.getPixelForValue(config._config.data.datasets[0].data[i][1]),
+              x.getPixelForValue(0.5),
+              0
+            );
+          }
+        },
+      };
+
       // config block
       const config = {
         type: "bar",
         data: data,
         options: {
+          plugins: {
+            // datalabels 是 ChartDataLabels 的 id
+            datalabels: {
+              formatter: (value) => {
+                const votes = Math.abs(value[1] - value[0]);
+                return `Votes: ${votes}`;
+              },
+            },
+            waterfallLines: {
+              lineColor: "#2e2e2e",
+              lineStyle1: 5,
+              lineStyle2: 6,
+            },
+            tooltip: {
+              enabled: false,
+            },
+          },
           scales: {
             y: {
               beginAtZero: true,
             },
           },
         },
+        plugins: [waterfallLines, ChartDataLabels],
       };
 
       // init render block
