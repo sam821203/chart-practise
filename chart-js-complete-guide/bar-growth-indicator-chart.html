@@ -84,6 +84,40 @@
         ],
       };
 
+      // barGrowthIndicator plugin
+      const barGrowthIndicator = {
+        id: "barGrowthIndicator",
+        afterDatasetsDraw(chart, scales, options) {
+          const {
+            ctx,
+            scales: { x, y },
+          } = chart;
+
+          const deltaPercentage = [];
+
+          for (let i = 0; i < chart._metasets[0]._parsed.length - 1; i++) {
+            let plus = 1 + i;
+            const delta = chart._metasets[0]._parsed[i].y;
+            const basic = chart._metasets[0]._parsed[plus].y;
+            let percentage = (delta / basic) * 100;
+            percentage = percentage - 100;
+
+            deltaPercentage.push(percentage.toFixed(1));
+          }
+
+          const startPoint = chart._metasets[1]._parsed[0]._custom.start;
+          const endPoint = chart._metasets[1]._parsed[0]._custom.end;
+
+          if (endPoint >= startPoint) {
+            console.log("positive");
+          }
+
+          if (endPoint < startPoint) {
+            console.log("negative");
+          }
+        },
+      };
+
       // config block
       const config = {
         type: "bar",
@@ -102,6 +136,7 @@
             },
           },
         },
+        plugins: [barGrowthIndicator],
       };
 
       // init render block
